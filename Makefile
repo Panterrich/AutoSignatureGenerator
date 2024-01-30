@@ -4,4 +4,5 @@ all:
 	pdflatex --schell-escape main.tex
 
 clean:
-	rm *.aux *.fdb_latexmk *.fls *.out *.gz *.log *.bbl *.blg *.toc
+	rm -rf *.aux *.fdb_latexmk *.fls *.out *.gz *.log *.bbl *.blg *.toc
+	rm -rf svg-inkscape/
