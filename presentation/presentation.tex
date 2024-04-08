@@ -1,0 +1,121 @@
+\documentclass[10pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+% Remove russian in English presentation
+\usepackage[english,russian]{babel}
+
+\usetheme[
+  sectionpage=simple,
+  numbering=fraction
+]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\usepackage{todonotes}
+\usepackage{ifthen}%
+\providecommand\enabletodos{true}%
+\ifthenelse{ \equal{\enabletodos}{true} }{%
+  \presetkeys{todonotes}{inline}{}%
+}{%
+  \presetkeys{todonotes}{disable}{}%
+}%
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\AtBeginSection[]{}
+
+\setbeamertemplate{section in toc}{%
+  \alert{$\bullet$}~\inserttocsection}
+\setbeamercolor{subsection in toc}{bg=white,fg=structure}
+\setbeamertemplate{subsection in toc}{%
+  \hspace{1.2em}{\alert{\rule[0.3ex]{3pt}{3pt}}~\inserttocsubsection\par}}
+
+\usepackage{hyperref}
+\hypersetup{unicode=true}
+
+\usepackage{adjustbox}
+\protected\def\psverb#1{\def\innerpsverb##1#1{\texttt{##1}}\innerpsverb}
+\usepackage{listings}
+
+\usepackage{makecell}
+\usepackage{changepage}
+
+\title{Автоматическая генерация сигнатур сетевых протоколов и приложений}
+%\subtitle{Подназвание доклада}
+\date{18 апреля 2024 г.}
+\author{Алексей Дурнов}
+
+% Russian
+\institute{МФТИ, кафедра системного программирования, ИСП РАН}
+\titlegraphic{\hfill\includegraphics[height=0.5cm]{logo_isp_ru.png}}
+% English
+% \institute{ISP RAS}
+% \titlegraphic{\hfill\includegraphics[height=0.5cm]{logo_isp_en.png}}
+
+\definecolor{Blue}{HTML}{29619b}
+\setbeamercolor{frametitle}{bg=Blue}
+\setbeamercolor{palette primary}{bg=Blue}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Введение}
+    \begin{itemize}
+      \item Методы классификации сетевого трафика:
+        \begin{enumerate}
+            \item основанные на идентификации по номеру порта
+            \item основанные на DPI подходе
+            \begin{itemize}
+                \item \alert{сигнатурный}
+            \end{itemize}
+            \item основанные на статистических характеристиках
+        \end{enumerate}
+        \item Свойства сигнатур для сетевых протоколов и приложений:
+        \begin{enumerate}
+            \item короткие общие подстроки
+            \item несколько потоков с разным набором подстрок
+            \item необходимость частого обновления
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Цель}
+    Целью данной работы является разработка и реализация метода автоматической
+    генерации сигнатур полезной нагрузки сетевого трафика для классификации этого трафика
+    в соответствии с использующимся протоколом или приложением в режиме реального времени.
+\end{frame}
+
+\begin{frame}{Задачи}
+    \begin{itemize}
+        \item Провести исследование литературы по соответствующей теме.
+        \item Собрать набор сетевых трасс для последующего тестирования и сравнения методов.
+        \item Разработать формат хранения сигнатуры.
+        \item Разработать алгоритм генерации сигнатур.
+        \begin{enumerate}
+            \item Выбрать методы для автоматической генерации сигнатур.
+            \item Найти ограничения рассматриваемых методов.
+            \item Выбрать оптимальный набор параметров метода.
+        \end{enumerate}
+        \item Разработать классификатор сетевого трафика для проверки сгенерированных сигнатур.
+        \begin{enumerate}
+            \item Выбрать и реализовать алгоритм сопоставления сигнатур
+            \item Выбрать метрики, по котором можно оценить качество классификации сигнатур
+        \end{enumerate}
+        \item Встроить генератор сигнатур и классификатор как модули в систему анализа высокоскоростного сетевого трафика, разрабатываемую в ИСП РАН.
+    \end{itemize}
+\end{frame}
+
+\appendix
+
+\begin{frame}[standout] \vfill Спасибо за внимание \vfill \end{frame}
+
+\end{document}

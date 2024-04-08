@@ -12,3 +12,4 @@ apt install -y texlive-fonts-extra
 apt install -y texlive-latex-extra
 apt install -y texlive-lang-cyrillic
 apt install -y inkscape
+apt install -y latexmk
