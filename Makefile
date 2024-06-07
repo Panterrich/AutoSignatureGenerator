@@ -1,8 +1,19 @@
-all:
-	pdflatex --shell-escape main.tex
-	bibtex main
-	pdflatex --schell-escape main.tex
+.PHONY: all thesis presentation clean cleanall
+
+all: thesis presentation
+
+thesis:
+	$(MAKE) -C thesis all
+	mv thesis/thesis.pdf thesis.pdf
+
+presentation:
+	$(MAKE) -C presentation all
+	mv presentation/presentation.pdf presentation.pdf
 
 clean:
-	rm -rf *.aux *.fdb_latexmk *.fls *.out *.gz *.log *.bbl *.blg *.toc
-	rm -rf svg-inkscape/
+	$(MAKE) -C thesis clean
+	$(MAKE) -C presentation clean
+
+cleanall:
+	$(MAKE) -C thesis cleanall
+	$(MAKE) -C presentation cleanall
