@@ -35,14 +35,14 @@ BitTorrent - P2P протокол для кооперативного обмен
 Для тестирования был добавлен дополнительный класс <<other>>, в который включены
 все остальные не рассматриваемые протоколы, и к которому классификатор будет относить все потоки, которым не соответствует ни одна сигнатура.
 
-\begin{table}[ht]
+\begin{table}[ht!]
     \caption{Данные для генерации сигнатур.}
     \label{train_dataset}
     \centering
     \resizebox{0.9\columnwidth}{!}{
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        Протокол   & \begin{tabular}[c]{@{}c@{}}Размер, \\ МБ\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ пакетов\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ потоков\end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ bytes/pkt \end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ pkts/stream \end{tabular} & \begin{tabular}[c]{@{}c@{}} Количеcтво \\ потоков: \\ $\geq$ 5 pkts \end{tabular} \\ \hline
+        Протокол   & \begin{tabular}[c]{@{}c@{}}Размер, \\ МБ\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ пакетов\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ потоков\end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ bytes/pkt \end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ pkts/stream \end{tabular} & \begin{tabular}[c]{@{}c@{}} Количество \\ потоков: \\ $\geq$ 5 pkts \end{tabular} \\ \hline
         bittorrent & 272,4      & 240159             & 708                & 1134                             & 339                                 & 214                                          \\ \hline
         dns        & 130,7      & 1283082            & 204150             & 102                              & 6                                   & 11027                                        \\ \hline
         ftp        & 0,86       & 16959              & 735                & 51                               & 23                                  & 725                                          \\ \hline
@@ -53,7 +53,7 @@ BitTorrent - P2P протокол для кооперативного обмен
     \end{tabular}}
 \end{table}
 
-\begin{table}[ht]
+\begin{table}[ht!]
     \caption{Данные для тестирования сигнатур.}
     \label{test_dataset}
     \centering
@@ -147,6 +147,10 @@ BitTorrent - P2P протокол для кооперативного обмен
             не хранятся все потоки &
             хранятся все потоки &
             хранятся все потоки \\ \hline
+        Сборка сессии &
+            не требуется &
+            требуется &
+            требуется \\ \hline
         Параметр поддержки &
             отсутствует &
             присутствует &
@@ -157,6 +161,114 @@ BitTorrent - P2P протокол для кооперативного обмен
 
 \subsection{Реализация алгоритма LASER}
 
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width = 0.75\textwidth]{report/laser_no_filtered/Normalized_confusion_matrix.png}
+        \caption{Матрица ошибок для алгоритма LASER.}
+    \end{center}
+\end{figure}
+
+\begin{table}[ht!]
+    \caption{Результаты классификации для алгоритма LASER.}
+    \label{report:laser}
+    \centering
+    \resizebox{0.55\textwidth}{!}{
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        protocol     & precision & recall & f1-score & support \\ \hline
+        dns          & 0.93      & 1.00   & 0.97     & 27801   \\ \hline
+        pop          & 0.80      & 0.19   & 0.31     & 21      \\ \hline
+        smtp         & 0.94      & 0.92   & 0.93     & 1076    \\ \hline
+        imap         & 1.00      & 0.57   & 0.72     & 175     \\ \hline
+        bittorrent   & 0.92      & 0.97   & 0.95     & 886     \\ \hline
+        ftp          & 0.99      & 0.97   & 0.98     & 295     \\ \hline
+        http         & 0.99      & 0.94   & 0.96     & 4888    \\ \hline
+        other        & 0.99      & 0.86   & 0.92     & 12094   \\ \hline
+                     &           &        &          &         \\ \hline
+        accuracy     &           &        & 0.95     & 47236   \\ \hline
+        macro avg    & 0.95      & 0.80   & 0.84     & 47236   \\ \hline
+        weighted avg & 0.95      & 0.95   & 0.95     & 47236   \\ \hline
+    \end{tabular}}
+\end{table}
+
+\begin{table}[ht!]
+    \caption{Количеcтво потоков необходимое для генерации сигнатуры.}
+    \label{signature-generation}
+    \centering
+    \resizebox{0.6\textwidth}{!}{
+        \begin{tabular}{|c|c|c|}
+        \hline
+        Протокол & Количество сигнатур & \begin{tabular}[c]{@{}c@{}}Среднее количество \\ потоков на 1 сигнатуру\end{tabular} \\ \hline
+        bittorent & 51                  & 4,1                                       \\ \hline
+        dns       & 682                 & 16,1                                      \\ \hline
+        ftp       & 9                   & 80,5                                     \\ \hline
+        http      & 145                 & 10,3                                      \\ \hline
+        imap      & 10                  & 6,5                                       \\ \hline
+        pop       & 2                   & 20,0                                      \\ \hline
+        smtp      & 167                 & 4,8                                       \\ \hline
+        \end{tabular}}
+\end{table}
+
+\subsection{Влияние постобработки на результаты классификации}
+
+\begin{table}[ht!]
+    \caption{Количество сигнатур после постобработки.}
+    \label{post-processing}
+    \centering
+    \resizebox{0.45\textwidth}{!}{
+    \begin{tabular}{|c|cc|cc|}
+    \hline
+    Протокол & \multicolumn{2}{c|}{\begin{tabular}[c]{@{}c@{}}Количество\\ сигнатур\end{tabular}} & \multicolumn{2}{c|}{Избыточность} \\ \cline{2-5}
+               & \multicolumn{1}{c|}{Было} & Стало & \multicolumn{1}{c|}{Было} & Стало \\ \hline
+    bittorrent & \multicolumn{1}{c|}{51}   & 7     & \multicolumn{1}{c|}{0.53} & 0.53  \\ \hline
+    dns        & \multicolumn{1}{c|}{682}  & 64    & \multicolumn{1}{c|}{0.99} & 0.99  \\ \hline
+    ftp        & \multicolumn{1}{c|}{9}    & 8     & \multicolumn{1}{c|}{0.98} & 0.98  \\ \hline
+    http       & \multicolumn{1}{c|}{145}  & 47    & \multicolumn{1}{c|}{1.00} & 1.00  \\ \hline
+    imap       & \multicolumn{1}{c|}{10}   & 4     & \multicolumn{1}{c|}{1.00} & 0.79  \\ \hline
+    pop        & \multicolumn{1}{c|}{2}    & 1     & \multicolumn{1}{c|}{1.00} & 0.00  \\ \hline
+    smtp       & \multicolumn{1}{c|}{167}  & 26    & \multicolumn{1}{c|}{0.99} & 0.99  \\ \hline
+    \end{tabular}}
+\end{table}
+
+\subsection{Влияние сборки сессии на результаты классификации}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width = 0.75\textwidth]{report/laser_reasm/Normalized_confusion_matrix.png}
+        \caption{Матрица ошибок для алгоритма LASER с частичной сборкой сессии.}
+    \end{center}
+\end{figure}
+
+\begin{table}[ht!]
+    \caption{Результаты классификации для алгоритма LASER с частичной сборкой сессии.}
+    \label{report:laser_reasm}
+    \centering
+    \resizebox{0.55\textwidth}{!}{
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    protocol     & precision & recall & f1-score & support \\ \hline
+    dns          & 0.92      & 0.96   & 0.94     & 10565   \\ \hline
+    pop          & 0.67      & 0.19   & 0.30     &    21   \\ \hline
+    smtp         & 0.78      & 0.94   & 0.85     &  1464   \\ \hline
+    imap         & 0.91      & 0.48   & 0.62     &   189   \\ \hline
+    bittorrent   & 0.95      & 0.97   & 0.96     &   853   \\ \hline
+    ftp          & 0.99      & 0.99   & 0.99     &   288   \\ \hline
+    http         & 1.00      & 0.94   & 0.97     &  4890   \\ \hline
+    other        & 0.88      & 0.81   & 0.85     &  4804   \\ \hline
+                 &           &        &          &         \\ \hline
+    accuracy     &           &        & 0.92     & 23074   \\ \hline
+    macro avg    & 0.89      & 0.79   & 0.81     & 23074   \\ \hline
+    weighted avg & 0.92      & 0.92   & 0.92     & 23074   \\ \hline
+    \end{tabular}}
+\end{table}
+
+\begin{figure}[h!]
+    \begin{center}
+        \label{plt:lcs}
+        \includegraphics[width = 0.75\textwidth]{report/lcs/Normalized_confusion_matrix.png}
+        \caption{Матрица ошибок для алгоритма LASER с полной сборкой сессии.}
+    \end{center}
+\end{figure}
 
 
 \newpage
