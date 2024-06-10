@@ -34,8 +34,11 @@
 \renewcommand{\dateseparator}{.}
 
 %%% Работа с картинками
-\usepackage{caption}
-\captionsetup{justification=centering} % центрирование подписей к картинкам
+
+\usepackage[nooneline]{caption}
+\captionsetup[table]{justification=raggedright,labelsep=endash}
+\captionsetup[figure]{justification=centering,labelsep=endash}
+
 \usepackage{graphicx}                  % Для вставки рисунков
 \graphicspath{{images/}{images2/}{../images/}}     % папки с картинками
 \setlength\fboxsep{3pt}                % Отступ рамки \fbox{} от рисунка

@@ -80,3 +80,79 @@ procedure LASER (PacketA[1...m], PacketB[1...n])
         node.addChild(newNode);
       return true
     \end{lstlisting}
+
+\begin{lstlisting}[language=Pascal, caption=Алгоритм выделения подпоследовательности, mathescape]
+    subsequenceExtractor(SequenceSet, MinSupp):
+        for each sequence $S$ in SequenceSet do
+        for each item $i$ in sequence $S$ do
+            $L_1$ $\leftarrow$  $L_1$ $\cup$ $i$;
+        end
+        end
+        $k$ $\leftarrow$ 2
+        while $L_{k-1}$ $\neq$ $\varnothing$ do
+        for each candidate $c$ in $L_{k-1}$ do
+            supp $\leftarrow$ calSupport($c$, SequenceSet);
+            if (supp < Minsupp) then
+            $L_{k-1}$ $\leftarrow$ $L_{k-1}$ - $c$;
+            end
+        end
+        $L_k$ $\leftarrow$ extractCandidate($L_{k-1}$);
+        k++;
+        end
+        SubSequenceSet $\leftarrow$ $\cup_k$ $L_k$;
+        deleteSubset(SubSequenceSet);
+        return SubSequenceSet;
+    \end{lstlisting}
+
+\begin{lstlisting}[language=Pascal, caption=Алгоритм вычисления поддержки, mathescape]
+    calSupport(candidate, SequenceSet):
+      for each sequence $S$ in SequenceSet do
+        totalhost $\leftarrow$ totalhost $\cup$ $S$.host_id;
+        for k = 1 to size of ($S$, $<I_1I_2I_3...I_n>$) do
+          p $\leftarrow$ k, q $\leftarrow$ 1;
+          while ($S$, $<I_p>$ $==$ candidate.$<I_q>$) do
+            p++, q++;
+          end
+          if (q $==$ size of (candidate.$<I_1I_2I_3...I_n>$)) then
+            supphost $\leftarrow$ supphost $\cup$ S.host_id;
+            break
+          end
+        end
+      end
+      return supphost / totalhost;
+    \end{lstlisting}
+
+
+    \begin{lstlisting}[language=Pascal, caption=Алгоритм извлечения кандидата, mathescape]
+        extractCandidate($L_{k-1}$)
+          for each candidate $x$ in $L_{k-1}$ do
+            for each candidate $y$ in $L_{k-1}$ do
+              if (k $==$ 2) then
+                $L_k$ $\leftarrow$ $L_k$ $\cup$ $<x.<i_1>y.<i_1>>$;
+              end
+              else if (($x.<i_2>$ $==$ $y.<i_1>$) && ($x.<i_3>$ $==$ $y.<i_2>$) && ...
+                       ($x.<i_{k-2}>$ $==$ $y.<i_{k-1}>$)) then
+                $L_k$ $\leftarrow$ $L_k$ $\cup$ $<x.<i_1, i_2, i_3, ..., i_{k-1}>y.<i_{k-1}>$;
+              end
+            end
+          end
+          return $L_k$;
+        \end{lstlisting}
+
+
+
+\begin{lstlisting}[language=Pascal, caption=Алгоритм извлечения кандидата, mathescape]
+    extractCandidate($L_{k-1}$)
+      for each candidate $x$ in $L_{k-1}$ do
+        for each candidate $y$ in $L_{k-1}$ do
+          if (k $==$ 2) then
+            $L_k$ $\leftarrow$ $L_k$ $\cup$ $<x.<i_1>y.<i_1>>$;
+          end
+          else if (($x.<i_2>$ $==$ $y.<i_1>$) && ($x.<i_3>$ $==$ $y.<i_2>$) && ...
+                   ($x.<i_{k-2}>$ $==$ $y.<i_{k-1}>$)) then
+            $L_k$ $\leftarrow$ $L_k$ $\cup$ $<x.<i_1, i_2, i_3, ..., i_{k-1}>y.<i_{k-1}>$;
+          end
+        end
+      end
+      return $L_k$;
+    \end{lstlisting}
