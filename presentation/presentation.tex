@@ -1,15 +1,73 @@
 \documentclass[10pt]{beamer}
 
-\usepackage[utf8]{inputenc}
-% Remove russian in English presentation
-\usepackage[english,russian]{babel}
+\usepackage{paratype}
+\RequirePackage{cmap}
+\RequirePackage[T2A]{fontenc}
+\RequirePackage[utf8]{inputenc}
 
-\usetheme[
-  sectionpage=simple,
-  numbering=fraction
-]{metropolis}
+% Set up fonts
+%\RequirePackage{paratype} % Arial-like sans serif font
+%\RequirePackage{DejaVuSansMono} % Free widespread monospace font with cyrillic support
+%\RequirePackage{nimbussans} % Helvetica clone
+\RequirePackage[bold,light]{nimbusmono} % Courier clone
+%\RequirePackage{tempora}  % "Times" font
+
+\RequirePackage[english,russian]{babel}
+
+\usepackage{amsmath,mathrsfs,amsfonts,amssymb, mathtools}
+\usepackage{graphicx, epsfig}
+\usepackage{subfig}
+\usepackage{setspace}
+\usepackage{multirow}
+\captionsetup{labelformat=empty}
+\usepackage{wrapfig}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\usepackage{color, colortbl}
+\definecolor{lightRed}{RGB}{240, 170, 150}
+\definecolor{lightGreen}{RGB}{170, 230, 150}
+\definecolor{lightYellow}{RGB}{240, 230, 180}
+
+\usepackage{changepage}
+
+\setbeamerfont{frametitle}{size=\normalsize,family=\sffamily}
+\usetheme{Warsaw}%{Singapore}%{Warsaw}%{Warsaw}%{Darmstadt}
+\usecolortheme{sidebartab}
+\setbeamertemplate{footline}[author]
+\expandafter\def\expandafter\insertshorttitle\expandafter{%
+	\insertshorttitle\hfill%
+	\insertframenumber\,/\,\inserttotalframenumber}
+
+\definecolor{beamer@blendedblue}{RGB}{3,91,170}
+\setbeamercolor{color1}{bg=beamer@blendedblue,fg=white}
+% отключить клавиши навигации
+\setbeamertemplate{navigation symbols}{}
+
 \usepackage{appendixnumberbeamer}
-
 \usepackage{booktabs}
 \usepackage[scale=2]{ccicons}
 
@@ -17,108 +75,100 @@
 \usepgfplotslibrary{dateplot}
 
 \usepackage{xspace}
-\usepackage{svg}
 \newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
 
+\usepackage{svg}
 \usepackage{todonotes}
-\usepackage{ifthen}%
-\providecommand\enabletodos{true}%
-\ifthenelse{ \equal{\enabletodos}{true} }{%
-  \presetkeys{todonotes}{inline}{}%
-}{%
-  \presetkeys{todonotes}{disable}{}%
-}%
-
-\setbeamertemplate{caption}{\raggedright\insertcaption\par}
 
 \AtBeginSection[]{}
 
 \setbeamertemplate{section in toc}{%
   \alert{$\bullet$}~\inserttocsection}
-\setbeamercolor{subsection in toc}{bg=white,fg=structure}
-\setbeamertemplate{subsection in toc}{%
-  \hspace{1.2em}{\alert{\rule[0.3ex]{3pt}{3pt}}~\inserttocsubsection\par}}
 
 \graphicspath{{images/}{images2/}{../images/}}
-
-\usepackage{hyperref}
-\hypersetup{unicode=true}
-
-\setbeamertemplate{caption}[numbered]
-\setbeamertemplate{table}[numbered]
-
-\usepackage{adjustbox}
-\protected\def\psverb#1{\def\innerpsverb##1#1{\texttt{##1}}\innerpsverb}
-\usepackage{listings}
 
 \usepackage{makecell}
 \usepackage{changepage}
 
-\title{Автоматическая генерация сигнатур сетевых протоколов}
+\title[]{Автоматическая генерация сигнатур сетевых протоколов}
 %\subtitle{Подназвание доклада}
-\date{18 апреля 2024 г.}
-\author{{Дурнов Алексей Николаевич}\\
-{Научный руководитель: к. ф.-м. н. Гетьман А. И.}
-}
+
+\author{Дурнов Алексей Николаевич}
 
 % Russian
-\institute{МФТИ, кафедра системного программирования, ИСП РАН}
+\institute[МФТИ]{
+    Московский физико-технический институт\\
+    Физтех-школа радиотехники и компьютерных технологий\\
+    Кафедра системного программирования
+    \vspace{0.3cm} \\
+    Научный руководитель к.ф-м.н. Гетьман А. И.
+}
+
+\date{Москва, 2024 г.}
 \titlegraphic{\hfill\includegraphics[height=0.5cm]{logo_isp_ru.png}}
+
 % English
 % \institute{ISP RAS}
 % \titlegraphic{\hfill\includegraphics[height=0.5cm]{logo_isp_en.png}}
 
-\definecolor{Blue}{HTML}{29619b}
-\setbeamercolor{frametitle}{bg=Blue}
-\setbeamercolor{palette primary}{bg=Blue}
+\setbeamercolor{footline}{fg=black}
+
+\setbeamerfont{footline}{series=\bfseries}
 
 \begin{document}
 
-\maketitle
+\begin{frame}
+    \titlepage
+    \thispagestyle{empty}
+\end{frame}
 
-\begin{frame}{Введение}
-    \begin{itemize}
-      \item Методы классификации сетевого трафика:
-        \begin{enumerate}
+\begin{frame}{}
+    \begin{block}{Методы классификации сетевого трафика:}
+        \begin{itemize}
             \item основанные на идентификации по номеру порта сервера
             \item основанные на DPI подходе
             \begin{itemize}
                 \item \alert{сигнатурный}
             \end{itemize}
             \item основанные на статистических характеристиках
-        \end{enumerate}
-        \item Свойства сигнатур для сетевых протоколов и приложений:
-        \begin{enumerate}
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Сигнатура}
+        Это набор байтов (подстрок), обеспечивающий идентификацию.
+        Пример сгенерированной сигнатуры для HTTP:
+        \begin{itemize}
+            \item \{''GET /'', '' HTTP/1.'', ''\textbackslash r\textbackslash nHost: ''\}
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Свойства сигнатур для сетевых протоколов}
+        \begin{itemize}
             \item короткие общие подстроки
-            \item несколько потоков с разным набором подстрок
+            \item несколько потоков с разным набором подстрок (пример, FTP)
             \item необходимость частого обновления
-        \end{enumerate}
-    \end{itemize}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}{Цель}
-    Целью данной работы является разработка и реализация метода автоматической
-    генерации сигнатур полезной нагрузки сетевого трафика для классификации этого трафика
-    в соответствии с использующимся протоколом.
-\end{frame}
+\begin{frame}{Цель и задачи}
+    \begin{block}{Цель:}
+        разработка и реализация метода автоматической
+        генерации сигнатур полезной нагрузки сетевого трафика для классификации этого трафика
+        в соответствии с использующимся протоколом.
+    \end{block}
 
-\begin{frame}{Задачи}
-    \begin{itemize}
-        \item Провести исследование литературы по соответствующей теме.
-        \item Собрать набор сетевых трасс для последующего тестирования.
-        \item Выбрать формат сигнатуры сетевых протоколов.
-        \item Разработать алгоритм генерации сигнатур.
-        \begin{enumerate}
-            \item Выбрать методы для автоматической генерации сигнатур.
-            \item Рассмотреть ограничения данных методов.
-        \end{enumerate}
-        \item Разработать классификатор сетевого трафика для проверки сгенерированных сигнатур.
-        \begin{enumerate}
-            \item Выбрать метрики, по котором можно оценить качество классификации сигнатур.
-            \item Реализовать сопоставление сигнатур.
-        \end{enumerate}
-        \item Встроить генератор сигнатур и классификатор как модули в систему анализа сетевого трафика, разрабатываемую в ИСП РАН.
-    \end{itemize}
+    \begin{block}{Необходимо решить следующие задачи:}
+        \begin{itemize}
+            \item провести исследование литературы по соответствующей теме
+            \item собрать набор сетевых трасс для последующего тестирования
+            \item выбрать формат сигнатуры сетевых протоколов
+            \item разработать алгоритм генерации сигнатур
+            \item разработать классификатор сетевого трафика для проверки сгенерированных сигнатур
+            \item встроить генератор сигнатур и классификатор как модули в систему анализа сетевого трафика, разрабатываемую в ИСП РАН
+        \end{itemize}
+    \end{block}
+
 \end{frame}
 
 \begin{frame}{Формат сигнатур}
@@ -133,123 +183,67 @@
             \item сигнатура потока
         \end{enumerate}
     \end{itemize}
-\end{frame}
 
-\begin{frame}{Формат сигнатур: иерархия}
     \begin{figure}
         \begin{adjustwidth}{-2em}{-2em}
             \centering
-            \includegraphics[width=25em]{../images/signature_structure.png}
+            \includegraphics[width=15em]{../images/signature_structure_v2.png}
         \end{adjustwidth}
     \end{figure}
 
 \end{frame}
 
 \begin{frame}{Методы автоматической генерации сигнатур}
-
     \begin{itemize}
         \item \alert{LASER} (Application Signature ExtRaction)
         \begin{itemize}
             \item \alert{LCS} (Long Common Subsequence)
-            \item cигнатура пакета
-            \item[+] наиболее подходящий для модификаций
-            \item[---] неустойчив к шумам
-            \item[---] не утилизирует все потоки
+            \item сигнатура пакета
+            \item[+] не требуется сборка сессии
+            \item[+] не хранит все потоки
+            \item[---] 1 последовательность подстрок
         \end{itemize}
         \item AutoSig
         \begin{itemize}
-            \item cигнатура потока
+            \item сигнатура потока
             \item[+] набор последовательностей подстрок
-            \item[+] учитывает частотное распределение подстрок
-            \item[---] избыточное дерево подстрок
-            \item[---] долгая сходимость алгоритма
+            \item[---] требуется сборка сессии
+            \item[---] хранит все потоки
         \end{itemize}
         \item SigBox
         \begin{itemize}
-            \item cигнатура потока
-            \item[+] поддерживает иерархию
-            \item[---] долгая сходимость алгоритма
+            \item сигнатура потока
+            \item[+] не требуется сборка сессии
+            \item[---] хранит все потоки
+            \item[---] 1 последовательность подстрок
         \end{itemize}
     \end{itemize}
 
 \end{frame}
 
-\begin{frame}{Схема генерации сигнатуры}
-    \begin{figure}
-        \begin{adjustwidth}{-2em}{-2em}
-            \centering
-            \includesvg[width=27em]{../images/scheme_auto_signature_generation}
-        \end{adjustwidth}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Схема классификации трафика}
-    \begin{figure}
-        \begin{adjustwidth}{-2em}{-2em}
-            \centering
-            \includesvg[width=27em]{../images/scheme_auto_signature_classifier}
-        \end{adjustwidth}
-    \end{figure}
-\end{frame}
-
-\begin{frame}[shrink=5]{Данные для генерации сигнатур}
-    \begin{table}[]
-        \resizebox{12cm}{!}{
-            \begin{tabular}{|c|c|c|c|c|c|c|}
-                \hline
-                Протокол   & \begin{tabular}[c]{@{}c@{}}Размер, \\ МБ\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ пакетов\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ потоков\end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ bytes/pkt \end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ pkts/stream \end{tabular} & \begin{tabular}[c]{@{}c@{}} Количеcтво \\ потоков: \\ $\geq$ 5 pkts \end{tabular} \\ \hline
-                bittorrent & 272,4      & 240159             & 708                & 1134                             & 339                                 & 214                                          \\ \hline
-                dns        & 130,7      & 1283082            & 204150             & 102                              & 6                                   & 11027                                        \\ \hline
-                ftp        & 0,86       & 16959              & 735                & 51                               & 23                                  & 725                                          \\ \hline
-                http       & 1811,5     & 799062             & 13710              & 2268                             & 58                                  & 1500                                         \\ \hline
-                imap       & 22,0       & 27702              & 66                 & 793                              & 419                                 & 65                                           \\ \hline
-                pop        & 0,06       & 919                & 59                 & 64                               & 16                                  & 40                                           \\ \hline
-                smtp       & 13,5       & 59121              & 1120               & 229                              & 53                                  & 799                                          \\ \hline
-            \end{tabular}}
-    \end{table}
-\end{frame}
-
-\begin{frame}[shrink=5]{Данные для классификации}
-
-
-    \begin{table}[]
-        \resizebox{12cm}{!}{
-            \begin{tabular}{|c|c|c|c|c|c|}
-                \hline
-                Протокол   & \begin{tabular}[c]{@{}c@{}}Размер, \\ МБ\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ пакетов\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ потоков\end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ bytes/pkt \end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ pkts/stream \end{tabular}\\ \hline
-                bittorrent & 1,26       & 9409               & 876                & 133                              & 11                                  \\ \hline
-                dns        & 53,3       & 664809             & 27800              & 80                               & 24                                  \\ \hline
-                ftp        & 0,19       & 4000               & 294                & 48                               & 14                                  \\ \hline
-                http       & 1494       & 406030             & 4607               & 3681                             & 88                                  \\ \hline
-                imap       & 3,38       & 10587              & 143                & 320                              & 74                                  \\ \hline
-                other      & 1119       & 1235122            & 18846              & 906                              & 66                                  \\ \hline
-                pop        & 0,02       & 344                & 21                 & 58                               & 16                                  \\ \hline
-                smtp       & 5,8        & 34428              & 1018               & 170                              & 34                                  \\ \hline
-            \end{tabular}}
-        \end{table}
-\end{frame}
 
 \begin{frame}{Генерация сигнатур: алгоритм LASER}
     \begin{table}[]
-        \begin{tabular}{|c|c|c|}
+        \resizebox{10cm}{!}{
+        \begin{tabular}{|c|c|c|c|}
         \hline
-        Протокол & Количество сигнатур & \begin{tabular}[c]{@{}c@{}}Среднее количество \\ потоков на 1 сигнатуру\end{tabular} \\ \hline
-        bittorent & 51                  & 4,1                                       \\ \hline
-        dns       & 682                 & 16,1                                      \\ \hline
-        ftp       & 9                   & 80,5                                     \\ \hline
-        http      & 145                 & 10,3                                      \\ \hline
-        imap      & 10                  & 6,5                                       \\ \hline
-        pop       & 2                   & 20,0                                      \\ \hline
-        smtp      & 167                 & 4,8                                       \\ \hline
-        \end{tabular}
-        \end{table}
+        Протокол  & \begin{tabular}[c]{@{}c@{}} Количество \\ потоков: \\ $\geq$ 5 pkts \end{tabular} & Количество сигнатур & \begin{tabular}[c]{@{}c@{}}Среднее количество \\ потоков на 1 сигнатуру\end{tabular} \\ \hline
+        bittorent & 214                                                                               & 51                  & 4,1                                       \\ \hline
+        dns       & 11027                                                                             & 682                 & 16,1                                      \\ \hline
+        ftp       & 725                                                                               & 9                   & 80,5                                     \\ \hline
+        http      & 1500                                                                              & 145                 & 10,3                                      \\ \hline
+        imap      & 65                                                                                & 10                  & 6,5                                       \\ \hline
+        pop       & 40                                                                                & 2                   & 20,0                                      \\ \hline
+        smtp      & 799                                                                               & 167                 & 4,8                                       \\ \hline
+        \end{tabular}}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Результаты работы алгоритма LASER}
     \begin{figure}
         \begin{adjustwidth}{-2em}{-2em}
             \centering
-            \includegraphics[width=27em]{results/laser_no_filtered/Normalized_confusion_matrix.png}
+            \includegraphics[width=23em]{results/laser_no_filtered/Normalized_confusion_matrix.png}
         \end{adjustwidth}
     \end{figure}
 \end{frame}
@@ -275,7 +269,11 @@
         \end{table}
 \end{frame}
 
-\begin{frame}{Постобработка: \\ удаление дубликатов и простых надмножеств}
+\begin{frame}{Постобработка: удаление дубликатов и надмножеств}
+
+    \begin{block}{Избыточность}
+        Это отношение числа потоков, идентифицированных двумя и более сигнатурами, к общему числу потоков, идентифицированных набором сигнатур.
+    \end{block}
 
     \begin{table}[]
         \resizebox{6cm}{!}{
@@ -294,41 +292,24 @@
     \end{table}
 
     \begin{itemize}
-        \item Избыточность - отношение числа потоков, идентифицированных двумя и более сигнатурами к общему числу потоков, идентифицированных набором сигнатур.
-        \item Результаты классификации никак не поменялись, при этом сильно упало количество сигнатур.
-        \item Слегка уменьшилась избыточность.
+        \item Такая постобработка не влияет на результат классификации.
+        \item Сильно сократилось количество сигнатур, однако показатель избыточности всё ещё высокий.
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Схема генерации сигнатуры со сборкой TCP-сессий}
-    \begin{figure}
-        \begin{adjustwidth}{-2em}{-2em}
-            \centering
-            \includesvg[width=27em]{../images/scheme_auto_signature_generation_v2}
-        \end{adjustwidth}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Схема классификации трафика со сборкой TCP-сессий}
-    \begin{figure}
-        \begin{adjustwidth}{-2em}{-2em}
-            \centering
-            \includesvg[width=27em]{../images/scheme_auto_signature_classifier_v2}
-        \end{adjustwidth}
-    \end{figure}
-\end{frame}
 
 \begin{frame}{Результаты работы алгоритма LASER: \\ со сборкой последовательных пакетов TCP-сессии}
     \begin{figure}
         \begin{adjustwidth}{-2em}{-2em}
             \centering
-            \includegraphics[width=27em]{results/laser_reasm/Normalized_confusion_matrix.png}
+            \includegraphics[width=23em]{results/laser_reasm/Normalized_confusion_matrix.png}
         \end{adjustwidth}
     \end{figure}
 \end{frame}
 
 \begin{frame}{Результаты работы алгоритма LASER: \\ со сборкой последовательных пакетов TCP-сессии}
     \begin{table}[]
+        \resizebox{8cm}{!}{
         \begin{tabular}{|c|c|c|c|c|}
         \hline
         protocol     & precision & recall & f1-score & support \\ \hline
@@ -345,17 +326,30 @@
         macro avg    & 0.89      & 0.79   & 0.81     & 23074   \\ \hline
         weighted avg & 0.92      & 0.92   & 0.92     & 23074   \\ \hline
 
-        \end{tabular}
+        \end{tabular}}
     \end{table}
-\end{frame}
 
-\begin{frame}{Результаты}
     \begin{itemize}
-        \item При частичной сборке TCP-сессии c использованием LASER, полученные результаты получились немного хуже.
-        \item При полной сборке TCP-сессии с использованием LCS, результаты сильно зависят от параметров алгоритма и постобработки. Параметры необходимо подбирать для каждого протокола вручную.
-        \item Могут генерироваться неспецифичные сигнатуры.
+        \item При частичной сборке TCP-сессии ухудшились несильно.
+        \item При полной сборке TCP-сессии, результаты значительно хуже и сильно зависят от ограничения рассматриваемой полезной нагрузки.
     \end{itemize}
 \end{frame}
+
+\begin{frame}{Схемы генерации сигнатур и классификации трафика}
+    \begin{figure}
+        \begin{adjustwidth}{-2em}{-2em}
+            \centering
+            \includesvg[width=27em]{../images/scheme_auto_signature_generation_v2}
+        \end{adjustwidth}
+    \end{figure}
+    \begin{figure}
+        \begin{adjustwidth}{-2em}{-2em}
+            \centering
+            \includesvg[width=31em]{../images/scheme_auto_signature_classifier_v2}
+        \end{adjustwidth}
+    \end{figure}
+\end{frame}
+
 
 \begin{frame}{Заключение}
     \begin{itemize}
@@ -364,22 +358,64 @@
         \item Выбран формат сигнатуры сетевых протоколов.
         \item Рассмотрены ограничения выбранных методов и реализован один из них.
         \item Разработан классификатор сетевого трафика для проверки сгенерированных сигнатур.
-        \item Рассмотрено влияние сборки TCP-сессии и постобработки на результат классификации
+        \item Рассмотрено влияние сборки TCP-сессии и постобработки на результат классификации.
         \item Встроены генератор сигнатур и классификатор как модули в систему анализа высокоскоростного сетевого трафика, разрабатываемую в ИСП РАН.
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Будущие исследования}
-
     \begin{itemize}
         \item Реализация и сравнение других методов генерации сигнатур: AutoSig и SigBox.
         \item Реализация модуля уточнения положения сигнатуры и его влияние на точность.
-        \item Рассмотрение возможности применения машинного обучения (метода SVM) для выбора набора сигнатур при постобработке результатов.
+        \item Рассмотрение возможности применения машинного обучения для отбора сигнатур при постобработке результатов.
     \end{itemize}
 \end{frame}
 
 \appendix
 
-\begin{frame}[standout] \vfill Спасибо за внимание \vfill \end{frame}
+
+\begin{frame}[shrink=5]{Данные для генерации сигнатур}
+    \begin{table}[]
+        \resizebox{12cm}{!}{
+            \begin{tabular}{|c|c|c|c|c|c|c|}
+                \hline
+                Протокол   & \begin{tabular}[c]{@{}c@{}}Размер, \\ МБ\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ пакетов\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ потоков\end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ bytes/pkt \end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ pkts/stream \end{tabular} & \begin{tabular}[c]{@{}c@{}} Количеcтво \\ потоков: \\ $\geq$ 5 pkts \end{tabular} \\ \hline
+                bittorrent & 272,4      & 240159             & 708                & 1134                             & 339                                 & 214                                          \\ \hline
+                dns        & 130,7      & 1283082            & 204150             & 102                              & 6                                   & 11027                                        \\ \hline
+                ftp        & 0,86       & 16959              & 735                & 51                               & 23                                  & 725                                          \\ \hline
+                http       & 1811,5     & 799062             & 13710              & 2268                             & 58                                  & 1500                                         \\ \hline
+                imap       & 22,0       & 27702              & 66                 & 793                              & 419                                 & 65                                           \\ \hline
+                pop        & 0,06       & 919                & 59                 & 64                               & 16                                  & 40                                           \\ \hline
+                smtp       & 13,5       & 59121              & 1120               & 229                              & 53                                  & 799                                          \\ \hline
+            \end{tabular}}
+    \end{table}
+\end{frame}
+
+\begin{frame}[shrink=5]{Данные для классификации}
+    \begin{table}[]
+        \resizebox{11cm}{!}{
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+            Протокол   & \begin{tabular}[c]{@{}c@{}}Размер, \\ МБ\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ пакетов\end{tabular} & \begin{tabular}[c]{@{}c@{}}Количество \\ потоков\end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ bytes/pkt \end{tabular} &  \begin{tabular}[c]{@{}c@{}}Avg \\ pkts/stream \end{tabular}\\ \hline
+            bittorrent & 1,26       & 9409               & 876                & 133                              & 11                                  \\ \hline
+            dns        & 53,3       & 664809             & 27800              & 80                               & 24                                  \\ \hline
+            ftp        & 0,19       & 4000               & 294                & 48                               & 14                                  \\ \hline
+            http       & 1494       & 406030             & 4607               & 3681                             & 88                                  \\ \hline
+            imap       & 3,38       & 10587              & 143                & 320                              & 74                                  \\ \hline
+            other      & 1119       & 1235122            & 18846              & 906                              & 66                                  \\ \hline
+            pop        & 0,02       & 344                & 21                 & 58                               & 16                                  \\ \hline
+            smtp       & 5,8        & 34428              & 1018               & 170                              & 34                                  \\ \hline
+        \end{tabular}}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Результаты работы алгоритма LASER: \\ с полной сборкой TCP-сессии}
+    \begin{figure}
+        \begin{adjustwidth}{-2em}{-2em}
+            \centering
+            \includegraphics[width=23em]{results/lcs/Normalized_confusion_matrix.png}
+        \end{adjustwidth}
+    \end{figure}
+\end{frame}
 
 \end{document}
