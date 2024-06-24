@@ -298,16 +298,8 @@
 \end{frame}
 
 
-\begin{frame}{Результаты работы алгоритма LASER: \\ со сборкой последовательных пакетов TCP-сессии}
-    \begin{figure}
-        \begin{adjustwidth}{-2em}{-2em}
-            \centering
-            \includegraphics[width=23em]{results/laser_reasm/Normalized_confusion_matrix.png}
-        \end{adjustwidth}
-    \end{figure}
-\end{frame}
+\begin{frame}{Результаты работы алгоритма LASER со сборкой TCP-сессии}
 
-\begin{frame}{Результаты работы алгоритма LASER: \\ со сборкой последовательных пакетов TCP-сессии}
     \begin{table}[]
         \resizebox{8cm}{!}{
         \begin{tabular}{|c|c|c|c|c|}
@@ -329,10 +321,11 @@
         \end{tabular}}
     \end{table}
 
-    \begin{itemize}
-        \item При частичной сборке TCP-сессии ухудшились несильно.
-        \item При полной сборке TCP-сессии, результаты значительно хуже и сильно зависят от ограничения размера рассматриваемой полезной нагрузки.
-    \end{itemize}
+    \begin{block}{}
+        Результаты работы для частичной или полной сборки TCP-сессии ухудшаются,
+        и сильно зависят от ограничения размера рассматриваемой полезной нагрузки,
+        в связи с разным распределением среднего размера пакета в сетевых протоколах.
+    \end{block}
 \end{frame}
 
 \begin{frame}{Схемы генерации сигнатур и классификации трафика}
@@ -407,6 +400,15 @@
             smtp       & 5,8        & 34428              & 1018               & 170                              & 34                                  \\ \hline
         \end{tabular}}
     \end{table}
+\end{frame}
+
+\begin{frame}{Результаты работы алгоритма LASER: \\ со сборкой последовательных пакетов TCP-сессии}
+    \begin{figure}
+        \begin{adjustwidth}{-2em}{-2em}
+            \centering
+            \includegraphics[width=23em]{results/laser_reasm/Normalized_confusion_matrix.png}
+        \end{adjustwidth}
+    \end{figure}
 \end{frame}
 
 \begin{frame}{Результаты работы алгоритма LASER: \\ с полной сборкой TCP-сессии}
